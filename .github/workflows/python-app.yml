@@ -37,14 +37,25 @@ jobs:
     - name: Publicar resumen de tests en GitHub Step Summary
       if: always()
       run: |
-        echo '### Resumen de tests Pytest' >> $GITHUB_STEP_SUMMARY
+        echo "### 🧪 Resumen de tests Pytest" >> $GITHUB_STEP_SUMMARY
         if [ -f pytest-report.xml ]; then
-          PASSED=$(grep -o 'testsuite tests="[0-9]*" failures="[0-9]*" errors="[0-9]*"' pytest-report.xml | sed -E 's/.*tests="([0-9]+)" failures="([0-9]+)" errors="([0-9]+)".*/\1 passed, \2 failed, \3 errors/')
-          echo "**Resultados:** $PASSED" >> $GITHUB_STEP_SUMMARY
-          echo '\n<details><summary>Ver XML completo</summary>' >> $GITHUB_STEP_SUMMARY
-          echo '\n' >> $GITHUB_STEP_SUMMARY
+          STATS=$(grep -o 'testsuite tests="[0-9]*" failures="[0-9]*" errors="[0-9]*" skipped="[0-9]*"' pytest-report.xml | head -1)
+          TOTAL=$(echo $STATS | sed -E 's/.*tests="([0-9]+)".*/\1/')
+          FAIL=$(echo $STATS | sed -E 's/.*failures="([0-9]+)".*/\1/')
+          ERRORS=$(echo $STATS | sed -E 's/.*errors="([0-9]+)".*/\1/')
+          SKIP=$(echo $STATS | sed -E 's/.*skipped="([0-9]+)".*/\1/')
+          PASS=$((TOTAL-FAIL-ERRORS-SKIP))
+          echo "**Resultados:**" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Pasados: $PASS" >> $GITHUB_STEP_SUMMARY
+          echo "- ❌ Fallos: $FAIL" >> $GITHUB_STEP_SUMMARY
+          echo "- ⚠️ Errores: $ERRORS" >> $GITHUB_STEP_SUMMARY
+          echo "- ⏭️ Saltados: $SKIP" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔢 Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<details><summary>Ver reporte XML completo</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           cat pytest-report.xml >> $GITHUB_STEP_SUMMARY
-          echo '\n</details>' >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
         else
           echo 'No se encontró el reporte XML de Pytest.' >> $GITHUB_STEP_SUMMARY
         fi
