@@ -51,12 +51,14 @@ flask_app/
    # o con podman
    podman build -t ismaelmrn/flask-app:latest .
    ```
-2. Ejecuta el contenedor:
+2. Ejecuta el contenedor (puerto local 6000 → contenedor 5000):
    ```bash
-   docker run -p 5000:5000 ismaelmrn/flask-app:latest
+   docker run -p 6000:5000 ismaelmrn/flask-app:latest
    # o con podman
-   podman run -p 5000:5000 ismaelmrn/flask-app:latest
+   podman run -p 6000:5000 ismaelmrn/flask-app:latest
    ```
+   
+   Ahora accede a la app en [http://localhost:6000](http://localhost:6000)
 
 ## Subir a Docker Hub
 
