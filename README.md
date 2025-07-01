@@ -75,13 +75,6 @@ flask_app/
    podman push ismaelmrn/flask-app:latest
    ```
 
-## Contacto
-
-- **Autor:** José Ismael Marín Ghalem
-- **Email:** joseismaelmaringhalem@gmail.com
-- **GitHub:** [ismaelGTI](https://github.com/ismaelGTI)
-- **Teléfono:** +34 685 76 87 75
-
 ---
 
 ¡Gracias por visitar este proyecto! Si te gusta, no dudes en dejar una estrella ⭐ en GitHub o contactar para cualquier colaboración.
