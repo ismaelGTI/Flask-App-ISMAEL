@@ -33,24 +33,31 @@ jobs:
     - name: Run tests
       run: |
         pip install pytest
-        pytest --maxfail=1 --disable-warnings --tb=short --junitxml=pytest-report.xml
+        pytest -v --maxfail=1 --disable-warnings --tb=short --junitxml=pytest-report.xml | tee pytest-output.log
     - name: Publicar resumen de tests en GitHub Step Summary
       if: always()
       run: |
         echo "### 🧪 Resumen de tests Pytest" >> $GITHUB_STEP_SUMMARY
         if [ -f pytest-report.xml ]; then
-          # Extraer línea con atributos, aunque no tenga skipped
-          STATS=$(grep -o 'testsuite tests="[0-9]*" failures="[0-9]*" errors="[0-9]*"[^"]*' pytest-report.xml | head -1)
+          # Extraer atributos del XML
+          STATS=$(grep -o 'testsuite tests="[0-9]*" failures="[0-9]*" errors="[0-9]*"[^\n>]*' pytest-report.xml | head -1)
+          if [ -z "$STATS" ]; then
+            echo "**No se detectaron tests en pytest-report.xml.**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>Ver salida de pytest</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat pytest-output.log >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
           TOTAL=$(echo "$STATS" | sed -E 's/.*tests="([0-9]+)".*/\1/')
           FAIL=$(echo "$STATS" | sed -E 's/.*failures="([0-9]+)".*/\1/')
           ERRORS=$(echo "$STATS" | sed -E 's/.*errors="([0-9]+)".*/\1/')
-          # Si skipped no está, ponerlo a 0
           if echo "$STATS" | grep -q 'skipped="'; then
             SKIP=$(echo "$STATS" | sed -E 's/.*skipped="([0-9]+)".*/\1/')
           else
             SKIP=0
           fi
-          # Si alguna variable está vacía, poner a 0
           TOTAL=${TOTAL:-0}
           FAIL=${FAIL:-0}
           ERRORS=${ERRORS:-0}
