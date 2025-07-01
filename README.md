@@ -51,7 +51,7 @@ flask_app/
    # o con podman
    podman build -t ismaelmrn/flask-app:latest .
    ```
-2. Ejecuta el contenedor (puerto local 6000 → contenedor 5000):
+2. Ejecuta el contenedor (puerto local 6000 → contenedor 5000):  (*Puede ser cualquier puerto local, 6000 es en mi caso*)
    ```bash
    docker run -p 6000:5000 ismaelmrn/flask-app:latest
    # o con podman
