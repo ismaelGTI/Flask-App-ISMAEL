@@ -40,7 +40,7 @@ jobs:
         echo "### 🧪 Resumen de tests Pytest" >> $GITHUB_STEP_SUMMARY
         if [ -f pytest-report.xml ]; then
           # Extraer atributos del XML
-          STATS=$(grep -o 'testsuite tests="[0-9]*" failures="[0-9]*" errors="[0-9]*"[^\n>]*' pytest-report.xml | head -1)
+          STATS=$(grep '<testsuite ' pytest-report.xml | head -1)
           if [ -z "$STATS" ]; then
             echo "**No se detectaron tests en pytest-report.xml.**" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
