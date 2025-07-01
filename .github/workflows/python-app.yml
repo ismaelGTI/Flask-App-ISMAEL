@@ -39,11 +39,22 @@ jobs:
       run: |
         echo "### 🧪 Resumen de tests Pytest" >> $GITHUB_STEP_SUMMARY
         if [ -f pytest-report.xml ]; then
-          STATS=$(grep -o 'testsuite tests="[0-9]*" failures="[0-9]*" errors="[0-9]*" skipped="[0-9]*"' pytest-report.xml | head -1)
-          TOTAL=$(echo $STATS | sed -E 's/.*tests="([0-9]+)".*/\1/')
-          FAIL=$(echo $STATS | sed -E 's/.*failures="([0-9]+)".*/\1/')
-          ERRORS=$(echo $STATS | sed -E 's/.*errors="([0-9]+)".*/\1/')
-          SKIP=$(echo $STATS | sed -E 's/.*skipped="([0-9]+)".*/\1/')
+          # Extraer línea con atributos, aunque no tenga skipped
+          STATS=$(grep -o "testsuite tests=\"[0-9]*\" failures=\"[0-9]*\" errors=\"[0-9]*\"[^"]*" pytest-report.xml | head -1)
+          TOTAL=$(echo "$STATS" | sed -E 's/.*tests=\"([0-9]+)\".*/\1/')
+          FAIL=$(echo "$STATS" | sed -E 's/.*failures=\"([0-9]+)\".*/\1/')
+          ERRORS=$(echo "$STATS" | sed -E 's/.*errors=\"([0-9]+)\".*/\1/')
+          # Si skipped no está, ponerlo a 0
+          if echo "$STATS" | grep -q 'skipped="'; then
+            SKIP=$(echo "$STATS" | sed -E 's/.*skipped=\"([0-9]+)\".*/\1/')
+          else
+            SKIP=0
+          fi
+          # Si alguna variable está vacía, poner a 0
+          TOTAL=${TOTAL:-0}
+          FAIL=${FAIL:-0}
+          ERRORS=${ERRORS:-0}
+          SKIP=${SKIP:-0}
           PASS=$((TOTAL-FAIL-ERRORS-SKIP))
           echo "**Resultados:**" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Pasados: $PASS" >> $GITHUB_STEP_SUMMARY
@@ -58,4 +69,6 @@ jobs:
           echo "</details>" >> $GITHUB_STEP_SUMMARY
         else
           echo 'No se encontró el reporte XML de Pytest.' >> $GITHUB_STEP_SUMMARY
+        fi
+        fi
         fi
