@@ -1,7 +1,13 @@
 def test_contacto_post_valido(tmp_path, monkeypatch):
     # Usar un archivo temporal para no modificar mensajes.txt real
     test_file = tmp_path / "mensajes.txt"
-    monkeypatch.setattr("builtins.open", lambda f, m, encoding=None: open(test_file, m, encoding=encoding) if f == "mensajes.txt" else open(f, m, encoding=encoding))
+    import builtins
+    real_open = builtins.open
+    def fake_open(f, m='r', *args, **kwargs):
+        if f == "mensajes.txt":
+            return real_open(test_file, m, *args, **kwargs)
+        return real_open(f, m, *args, **kwargs)
+    monkeypatch.setattr(builtins, "open", fake_open)
     tester = app.test_client()
     data = dict(nombre='Test User', email='test@example.com', mensaje='Mensaje de prueba')
     response = tester.post('/contacto', data=data, follow_redirects=True)
