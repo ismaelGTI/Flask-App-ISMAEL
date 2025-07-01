@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¡Sorpresa Creativa!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+    <style>
+        .sorpresa-container {
+            background: #fff;
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+            text-align: center;
+        }
+        .emoji-bounce {
+            font-size: 3em;
+            animation: bounce 1.2s infinite alternate cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-30px); }
+        }
+        .fact {
+            font-size: 1.2em;
+            margin: 20px 0 30px 0;
+            color: #e52e71;
+        }
+        .btn-fact {
+            background: #e52e71;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 28px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn-fact:hover {
+            background: #ff8a00;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a> |
+        <a href="/contacto">Contacto</a> |
+        <a href="/about">Sobre mí</a>
+    </nav>
+    <div class="sorpresa-container">
+        <div class="emoji-bounce" id="emoji">🎉</div>
+        <h2>¡Sorpresa interactiva!</h2>
+        <div class="fact" id="fact">¿Sabías que puedes generar datos curiosos aleatorios aquí?</div>
+        <button class="btn-fact" onclick="mostrarDato()">Mostrar dato curioso</button>
+        <div style="margin-top:30px;">
+            <button onclick="window.location.href='/'" class="btn-sorpresa">Volver al inicio</button>
+        </div>
+    </div>
+    <script>
+        const datos = [
+            'El corazón de un camarón está en su cabeza.',
+            'Las abejas pueden reconocer rostros humanos.',
+            'El sol representa el 99.86% de la masa del sistema solar.',
+            'Los pulpos tienen tres corazones.',
+            'La miel nunca se echa a perder.',
+            'Los flamencos nacen grises, no rosas.',
+            'El código de barras fue inventado en 1952.',
+            'Las jirafas no tienen cuerdas vocales.',
+            'El ojo de un avestruz es más grande que su cerebro.',
+            'Los plátanos son bayas, pero las fresas no.'
+        ];
+        const emojis = ['🎉','🚀','🦄','🌈','✨','😺','🤖','🧠','🌟','🎲'];
+        function mostrarDato() {
+            const fact = datos[Math.floor(Math.random()*datos.length)];
+            const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+            document.getElementById('fact').textContent = fact;
+            document.getElementById('emoji').textContent = emoji;
+        }
+    </script>
+</body>
+</html>

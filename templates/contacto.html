@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a> |
+        <a href="/contacto">Contacto</a> |
+        <a href="/about">Sobre mí</a>
+    </nav>
+    <h1>Página de Contacto</h1>
+    <p>Puedes contactarme en: joseismaelmaringhalem@gmail.com</p>
+    <p>Número de teléfono: +34 685 76 87 75</p>
+    <p>GitHub: <a href="https://github.com/ismaelGTI">ismaelGTI</a></p>
+    <hr>
+    <h2>Envíame un mensaje</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" class="contact-form">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="mensaje">Mensaje:</label><br>
+        <textarea id="mensaje" name="mensaje"></textarea><br>
+        <button type="submit">Enviar</button>
+    </form>
+    <a href="/">Volver al inicio</a>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a> |
+        <a href="/contacto">Contacto</a> |
+        <a href="/about">Sobre mí</a>
+    </nav>
+    <h1>¡Bienvenido a la app de José Ismael Marín Ghalem!</h1>
+    <div class="bienvenida">
+        <p>Explora ejemplos de formularios, animaciones, widgets interactivos y más.<br>
+        ¡Descubre ideas modernas y creativas para tus propios proyectos web!</p>
+        <div class="destacados">
+            <div class="destacado">
+                <h3>Formulario de contacto</h3>
+                <p>Envía un mensaje y experimenta validaciones y feedback visual.</p>
+                <a href="/contacto" class="btn-sorpresa">Probar</a>
+            </div>
+            <div class="destacado">
+                <h3>Sobre este sitio</h3>
+                <p>Animaciones, botones interactivos y más detalles sobre la app.</p>
+                <a href="/about" class="btn-sorpresa">Ver más</a>
+            </div>
+            <div class="destacado">
+                <h3>¡Sorpresa!</h3>
+                <p>Haz clic y descubre una funcionalidad inesperada y divertida.</p>
+                <a href="/sorpresa" class="btn-sorpresa">¡Ir!</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sobre mí</title>
+</head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+    <script>
+        // Animación de entrada para la tarjeta
+        document.addEventListener('DOMContentLoaded', function() {
+            const about = document.querySelector('.about-container');
+            about.style.opacity = 0;
+            about.style.transform = 'translateY(40px)';
+            setTimeout(() => {
+                about.style.transition = 'all 0.8s cubic-bezier(.68,-0.55,.27,1.55)';
+                about.style.opacity = 1;
+                about.style.transform = 'translateY(0)';
+            }, 200);
+        });
+        // Cambiar avatar al pasar el mouse
+        function cambiarAvatar() {
+            document.getElementById('avatar').src = 'https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif';
+        }
+        function restaurarAvatar() {
+            document.getElementById('avatar').src = 'https://avatars.githubusercontent.com/u/1092637?v=4';
+        }
+        // Copiar email al portapapeles
+        function copiarEmail() {
+            const email = document.getElementById('email').textContent;
+            navigator.clipboard.writeText(email);
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = '¡Copiado!';
+            setTimeout(() => btn.textContent = 'Copiar', 1500);
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a> |
+        <a href="/contacto">Contacto</a> |
+        <a href="/about">Sobre mí</a>
+    </nav>
+    <div class="about-container">
+        <h1>Sobre mí</h1>
+        <img id="avatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar genérico" class="avatar">
+        <p>¡Hola! Soy José Ismael Marín Ghalem, desarrollador y entusiasta de la tecnología. Me apasiona crear aplicaciones web modernas y funcionales.</p>
+        <ul>
+            <li><strong>Email:</strong> <span id="email">joseismaelmaringhalem@gmail.com</span> <button id="copy-btn" onclick="copiarEmail()" type="button">Copiar</button></li>
+            <li><strong>GitHub:</strong> <a href="https://github.com/ismaelGTI">ismaelGTI</a></li>
+            <li><strong>Teléfono:</strong> +34 685 76 87 75</li>
+        </ul>
+        <div style="margin:30px 0;">
+            <button onclick="window.location.href='/sorpresa'" class="btn-sorpresa">¡Descubre una sorpresa!</button>
+        </div>
+        <a href="/">Volver al inicio</a>
+    </div>
+</body>
+</html>
