@@ -25,6 +25,7 @@ def test_home():
     response = tester.get('/')
     assert response.status_code == 200
     assert b'Bienvenido' in response.data
+    
 
 def test_about():
     tester = app.test_client()
